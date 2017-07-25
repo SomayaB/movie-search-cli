@@ -9,7 +9,8 @@
   "keywords": [],
   "author": "SomayaB",
   "license": "MIT",
-  "devDependencies": {
+  "dependencies": {
+    "express": "4.15.3",
     "cheerio": "1.0.0-rc.2"
   }
 }

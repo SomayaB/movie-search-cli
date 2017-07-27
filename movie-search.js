@@ -9,25 +9,32 @@ function queryIMDB(callback){
     path: `/find?ref_=nv_sr_fn&q=${searchTerms}&s=all`
     }, function(res){
       var html = ''
-      res.on('data', function(chunk){ return html += chunk }) //????
+      res.on('data', function(chunk){ return html += chunk })
       res.on('end', function(){
-      var movieNames = getMoviesNames(html)
-      callback(null, movieNames)
+      var searchResults = getSearchResults(html)
+      callback(null, searchResults)
     })
   })
 }
 
-function getMoviesNames(html){
+function getSearchResults(html){
   var $ = cheerio.load(html)
-  var movieNames = $('.findSection').first().find('.result_text').map(function(index, element){
+  var searchResults = $('.findSection').first().find('.result_text').map(function(index, element){
     return $(element).text()
   }).toArray()
-  return movieNames
+  return searchResults
 }
 
-queryIMDB(function(error, movieNames){
-  if(error){
-    throw error
-  }
-  console.log(movieNames.join('\n'))
-})
+
+function run(){
+  queryIMDB(function(error, searchResults){
+    if(error){
+      throw error
+    }
+    console.log(searchResults.join('\n'))
+  })
+}
+
+if (!module.parent){
+  run()
+}
